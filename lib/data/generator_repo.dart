@@ -17,12 +17,13 @@ class RandomWidgetGenerator {
     List<RandomColorObject> widgets = [];
 
     for (int i = 0; i < count; i++) {
-      double top = _random.nextDouble() * (contextHeight - 100);
+      double top = _random.nextDouble() * (contextHeight - 200);
       double left = _random.nextDouble() * (contextWidget - 100);
       Color color = _colors[_random.nextInt(_colors.length)];
 
       widgets.add(RandomColorObject(top: top, left: left, color: color));
     }
+    widgets.add(RandomColorObject(color: Colors.transparent, left: 0, top: 0));
     return widgets;
   }
 }

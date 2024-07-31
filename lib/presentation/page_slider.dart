@@ -1,7 +1,7 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:page_slider_example/data/generator_repo.dart';
 import 'package:page_slider_example/domain/random_color_object.dart';
+import 'package:page_slider_example/presentation/widgets/stacked_colors.dart';
 
 class PageSlider extends StatelessWidget {
   PageSlider({super.key});
@@ -20,18 +20,21 @@ class PageSlider extends StatelessWidget {
     if (firstPage.isEmpty) {
       firstPage =
           generatorRepo.generateRandomWidgets(7, screenHeight, screenWidth);
-      firstPage
-          .add(RandomColorObject(color: Colors.transparent, left: 0, top: 0));
     }
     if (secondPage.isEmpty) {
       secondPage =
           generatorRepo.generateRandomWidgets(7, screenHeight, screenWidth);
-      secondPage
-          .add(RandomColorObject(color: Colors.transparent, left: 0, top: 0));
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Slider Example')),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {}, icon: const Icon(Icons.arrow_back_ios)),
+        title: Text(
+          'Transfer',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
       body: PageView(
         physics: const BouncingScrollPhysics(),
         controller: _pageController,
@@ -39,71 +42,21 @@ class PageSlider extends StatelessWidget {
           AnimatedBuilder(
             animation: _pageController,
             builder: (context, _) {
-              return Stack(
-                children: firstPage.asMap().entries.map(
-                  (widget) {
-                    return Positioned(
-                      top: widget.value.top,
-                      left: widget.value.left -
-                          (_pageController.position.haveDimensions
-                              ? (_pageController.page ?? 0.0) *
-                                  (screenWidth - widget.value.left) *
-                                  1.5
-                              : 0.0),
-                      child: BackdropFilter(
-                        filter: ui.ImageFilter.blur(
-                            sigmaX: _pageController.position.haveDimensions
-                                ? ((_pageController.page ?? 0.0).abs() * 20)
-                                : 0.001,
-                            sigmaY: _pageController.position.haveDimensions
-                                ? ((_pageController.page!).abs() * 3)
-                                : 0.001),
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                              color: widget.value.color,
-                              shape: BoxShape.circle),
-                        ),
-                      ),
-                    );
-                  },
-                ).toList(),
-              );
+              return StackedColor(
+                  page: 1,
+                  randomColors: firstPage,
+                  pageController: _pageController,
+                  screenWidth: screenWidth);
             },
           ),
           AnimatedBuilder(
             animation: _pageController,
             builder: (context, child) {
-              return Stack(
-                children: secondPage.map((widget) {
-                  return Positioned(
-                    top: widget.top,
-                    right: widget.left -
-                        (widget.left) * 1.5 +
-                        (_pageController.position.haveDimensions
-                            ? (_pageController.page ?? 0.0) *
-                                (widget.left) *
-                                1.5
-                            : 0.0),
-                    child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                          sigmaX: _pageController.position.haveDimensions
-                              ? ((1 - _pageController.page!).abs() * 20)
-                              : 0.001,
-                          sigmaY: _pageController.position.haveDimensions
-                              ? ((1 - _pageController.page!).abs() * 3)
-                              : 0.001),
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                            color: widget.color, shape: BoxShape.circle),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              );
+              return StackedColor(
+                  page: 2,
+                  randomColors: secondPage,
+                  pageController: _pageController,
+                  screenWidth: screenWidth);
             },
           ),
         ],
