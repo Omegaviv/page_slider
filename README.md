@@ -2,6 +2,10 @@
 
 This project demonstrates a Flutter application with a `PageView` that contains pages with animated widgets. The structure includes several folders and files organized as follows:
 
+
+https://github.com/user-attachments/assets/92bfa1d1-1023-4fef-9334-d171d351f7df
+
+
 #### Project Structure
 
 ```
