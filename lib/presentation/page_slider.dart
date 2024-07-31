@@ -3,15 +3,29 @@ import 'package:page_slider_example/data/generator_repo.dart';
 import 'package:page_slider_example/domain/random_color_object.dart';
 import 'package:page_slider_example/presentation/widgets/stacked_colors.dart';
 
-class PageSlider extends StatelessWidget {
-  PageSlider({super.key});
+class PageSlider extends StatefulWidget {
+  const PageSlider({super.key});
 
+  @override
+  State<PageSlider> createState() => _PageSliderState();
+}
+
+class _PageSliderState extends State<PageSlider> {
   final PageController _pageController = PageController();
+
   final RandomWidgetGenerator generatorRepo = RandomWidgetGenerator();
 
   List<RandomColorObject> firstPage = [];
 
   List<RandomColorObject> secondPage = [];
+
+  void reGenrateWidgets(double screenHeight, double screenWidth) {
+    firstPage =
+        generatorRepo.generateRandomWidgets(7, screenHeight, screenWidth);
+    secondPage =
+        generatorRepo.generateRandomWidgets(7, screenHeight, screenWidth);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +44,13 @@ class PageSlider extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {}, icon: const Icon(Icons.arrow_back_ios)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                reGenrateWidgets(screenHeight, screenWidth);
+              },
+              icon: const Icon(Icons.replay_outlined))
+        ],
         title: Text(
           'Transfer',
           style: Theme.of(context).textTheme.titleLarge,
