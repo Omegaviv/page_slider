@@ -29,6 +29,9 @@ class StackedColor extends StatelessWidget {
                     (_pageController.position.haveDimensions
                         ? (_pageController.page ?? 0.0) *
                             (screenWidth - widgetObject.left) *
+                            ((screenWidth - widgetObject.left) *
+                                2 /
+                                screenWidth) *
                             1.5
                         : 0.0)
                 : null,
